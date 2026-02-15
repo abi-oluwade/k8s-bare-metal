@@ -1,4 +1,4 @@
-# K8S Bare Metal - Learning
+# K8S Bare Metal
 The purpose of this document is log my journey understanding and administering a bare-metal k8s cluster, which monitoring via Prometheus + Grafana for a simple API application. The steps involved but not limited to:
 
 - Deploying a control plane on the local machine (kube-apiserver, kube-controller, kube-scheduler and etcd)
