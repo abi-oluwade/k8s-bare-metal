@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pihole-deployment
+  namespace: pihole
+  labels:
+    app.kubernetes.io/name: pihole
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: pihole
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: pihole
+    spec:
+      containers:
+        - name: pihole
+          image: pihole/pihole:latest
+          resources:
+            limits:
+              memory: 100Mi
+              cpu: "0.5"
+            requests:
+              memory: 50Mi
+              cpu: "0.1"
+          ports:
+          - containerPort: 53
+            name: dns-tcp
+          - containerPort: 53
+            name: dns-udp
+          - containerPort: 80
+            name: http
+          - containerPort: 443
+            name: https
+          env: 
+          - name: TZ
+            value: "Europe/London"
+          - name: FTLCONF_webserver_api_password
+            value: "correct horse battery staple"
+          - name: FTLCONF_dns_listeningMode
+            value: "ALL"
+          volumeMounts: 
+            - mountPath: /etc/pihole
+              name: pihole-config-volume
+      volumes:
+        - name: pihole-config-volume
+          hostPath:
+            path: /etc/pihole
+      
+
+
